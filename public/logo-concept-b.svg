@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348 96" fill="none">
+  <defs>
+    <linearGradient id="terraB" x1="4" y1="4" x2="92" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C9714B"/>
+      <stop offset="1" stop-color="#94451F"/>
+    </linearGradient>
+  </defs>
+  <!-- Imigongo-inspired diamond -->
+  <path d="M48 3 L93 48 L48 93 L3 48 Z" fill="url(#terraB)"/>
+  <path d="M48 17 L79 48 L48 79 L17 48 Z" fill="#FAF4E8"/>
+  <path d="M22 48 L35 35 L48 48 L61 35 L74 48" stroke="#9C4A2A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="48" cy="63" r="4.5" fill="#9C4A2A"/>
+  <!-- wordmark -->
+  <text x="108" y="62" font-family="'Fraunces',Georgia,'Times New Roman',serif" font-size="46" font-weight="600" letter-spacing="-0.5" fill="#3E2A20">Umubiri</text>
+</svg>

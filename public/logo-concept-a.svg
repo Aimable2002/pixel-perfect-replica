@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348 96" fill="none">
+  <defs>
+    <linearGradient id="terraA" x1="20" y1="14" x2="78" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C9714B"/>
+      <stop offset="1" stop-color="#9C4A2A"/>
+    </linearGradient>
+  </defs>
+  <!-- resting head -->
+  <circle cx="48" cy="23" r="11" fill="url(#terraA)"/>
+  <!-- cradling hands -->
+  <path d="M23 42 C23 76 73 76 73 42" stroke="url(#terraA)" stroke-width="13" stroke-linecap="round"/>
+  <!-- wordmark -->
+  <text x="96" y="62" font-family="'DM Sans','Segoe UI','Helvetica Neue',sans-serif" font-size="45" font-weight="600" letter-spacing="-1.2" fill="#3E2A20">umubiri</text>
+</svg>
