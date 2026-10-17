@@ -39,7 +39,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex min-h-[60vh] items-center justify-center px-4 text-center">
       <div>
         <h1 className="text-xl font-semibold">This page didn't load</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{(error as Error).message}</p>
         <Button className="mt-6" onClick={() => { router.invalidate(); reset(); }}>Try again</Button>
       </div>
     </div>

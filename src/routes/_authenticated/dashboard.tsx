@@ -154,8 +154,8 @@ function Photos({ photos, onSaved }: any) {
   const [busy, setBusy] = useState(false);
   const [isPublic, setIsPublic] = useState(true);
   const upload = async (file: File) => {
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) return toast.error("Use JPG, PNG or WEBP");
-    if (file.size > 5 * 1024 * 1024) return toast.error("Max 5 MB");
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) { toast.error("Use JPG, PNG or WEBP"); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Max 5 MB"); return; }
     setBusy(true);
     try {
       const { data: u } = await supabase.auth.getUser();

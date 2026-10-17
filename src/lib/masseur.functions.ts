@@ -112,7 +112,7 @@ export const updatePhoto = createServerFn({ method: "POST" })
       const id = await myMasseurId(sb, context.userId);
       await sb.from("masseur_photos").update({ is_primary: false }).eq("masseur_id", id);
     }
-    const patch: Record<string, boolean> = {};
+    const patch: { is_public?: boolean; is_primary?: boolean } = {};
     if (data.is_public !== undefined) patch.is_public = data.is_public;
     if (data.is_primary !== undefined) patch.is_primary = data.is_primary;
     const { error } = await sb.from("masseur_photos").update(patch).eq("id", data.id);

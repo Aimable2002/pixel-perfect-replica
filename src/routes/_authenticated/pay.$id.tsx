@@ -41,6 +41,7 @@ function Pay() {
       const t = setTimeout(() => navigate({ to: "/access/$id", params: { id } }), 1200);
       return () => clearTimeout(t);
     }
+    return undefined;
   }, [status.data?.status]);
 
   const start = async () => {
