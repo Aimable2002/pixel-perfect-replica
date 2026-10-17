@@ -10,33 +10,131 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedMyAccessRouteImport } from './routes/_authenticated/my-access'
+import { Route as MasseursIdRouteImport } from './routes/masseurs.$id'
+import { Route as AuthenticatedAccessIdRouteImport } from './routes/_authenticated/access.$id'
+import { Route as AuthenticatedPayIdRouteImport } from './routes/_authenticated/pay.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyAccessRoute = AuthenticatedMyAccessRouteImport.update({
+  id: '/my-access',
+  path: '/my-access',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const MasseursIdRoute = MasseursIdRouteImport.update({
+  id: '/masseurs/$id',
+  path: '/masseurs/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAccessIdRoute = AuthenticatedAccessIdRouteImport.update({
+  id: '/access/$id',
+  path: '/access/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPayIdRoute = AuthenticatedPayIdRouteImport.update({
+  id: '/pay/$id',
+  path: '/pay/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/my-access': typeof AuthenticatedMyAccessRoute
+  '/masseurs/$id': typeof MasseursIdRoute
+  '/access/$id': typeof AuthenticatedAccessIdRoute
+  '/pay/$id': typeof AuthenticatedPayIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/my-access': typeof AuthenticatedMyAccessRoute
+  '/masseurs/$id': typeof MasseursIdRoute
+  '/access/$id': typeof AuthenticatedAccessIdRoute
+  '/pay/$id': typeof AuthenticatedPayIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/my-access': typeof AuthenticatedMyAccessRoute
+  '/masseurs/$id': typeof MasseursIdRoute
+  '/_authenticated/access/$id': typeof AuthenticatedAccessIdRoute
+  '/_authenticated/pay/$id': typeof AuthenticatedPayIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/dashboard'
+    | '/my-access'
+    | '/masseurs/$id'
+    | '/access/$id'
+    | '/pay/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/dashboard'
+    | '/my-access'
+    | '/masseurs/$id'
+    | '/access/$id'
+    | '/pay/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/admin'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/my-access'
+    | '/masseurs/$id'
+    | '/_authenticated/access/$id'
+    | '/_authenticated/pay/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  MasseursIdRoute: typeof MasseursIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +146,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-access': {
+      id: '/_authenticated/my-access'
+      path: '/my-access'
+      fullPath: '/my-access'
+      preLoaderRoute: typeof AuthenticatedMyAccessRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/masseurs/$id': {
+      id: '/masseurs/$id'
+      path: '/masseurs/$id'
+      fullPath: '/masseurs/$id'
+      preLoaderRoute: typeof MasseursIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/access/$id': {
+      id: '/_authenticated/access/$id'
+      path: '/access/$id'
+      fullPath: '/access/$id'
+      preLoaderRoute: typeof AuthenticatedAccessIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pay/$id': {
+      id: '/_authenticated/pay/$id'
+      path: '/pay/$id'
+      fullPath: '/pay/$id'
+      preLoaderRoute: typeof AuthenticatedPayIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMyAccessRoute: typeof AuthenticatedMyAccessRoute
+  AuthenticatedAccessIdRoute: typeof AuthenticatedAccessIdRoute
+  AuthenticatedPayIdRoute: typeof AuthenticatedPayIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMyAccessRoute: AuthenticatedMyAccessRoute,
+  AuthenticatedAccessIdRoute: AuthenticatedAccessIdRoute,
+  AuthenticatedPayIdRoute: AuthenticatedPayIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  MasseursIdRoute: MasseursIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
