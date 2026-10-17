@@ -16,7 +16,7 @@ export function ImageLightbox() {
       if (!el) return;
       e.preventDefault();
       e.stopPropagation();
-      const group = el.dataset.zoomGroup;
+      const group = el.dataset["zoomGroup"];
       const list = group
         ? Array.from(document.querySelectorAll<HTMLImageElement>(`img[data-zoom][data-zoom-group="${group}"]`))
         : [el];
