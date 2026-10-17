@@ -29,10 +29,10 @@ function Detail() {
   return (
     <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
       <div className="space-y-3">
-        {m.photos[0] && <img src={m.photos[0]} alt={m.display_name} className="aspect-[4/3] w-full rounded-xl object-cover" />}
+        {m.photos[0] && <img data-zoom data-zoom-group="profile" src={m.photos[0]} alt={m.display_name} className="cursor-zoom-in aspect-[4/3] w-full rounded-xl object-cover" />}
         {m.photos.length > 1 && (
           <div className="grid grid-cols-3 gap-3">
-            {m.photos.slice(1).map((p) => <img key={p} src={p} alt="" loading="lazy" className="aspect-square rounded-lg object-cover" />)}
+            {m.photos.slice(1).map((p) => <img data-zoom data-zoom-group="profile" key={p} src={p} alt="" loading="lazy" className="cursor-zoom-in aspect-square rounded-lg object-cover" />)}
           </div>
         )}
       </div>

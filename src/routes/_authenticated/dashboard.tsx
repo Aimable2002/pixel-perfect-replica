@@ -177,7 +177,7 @@ function Photos({ photos, onSaved }: any) {
       <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
         {photos.map((p: any) => (
           <div key={p.id} className="overflow-hidden rounded-lg border">
-            {p.url && <img src={p.url} alt="" className="aspect-square w-full object-cover" />}
+            {p.url && <img data-zoom data-zoom-group="mine" src={p.url} alt="" className="cursor-zoom-in aspect-square w-full object-cover" />}
             <div className="flex items-center justify-between p-2 text-xs">
               <label className="flex items-center gap-1"><Switch checked={p.is_public} onCheckedChange={async (v) => { await upd({ data: { id: p.id, is_public: v } }); onSaved(); }} />{p.is_public ? "Public" : "Private"}</label>
               <div className="flex">
