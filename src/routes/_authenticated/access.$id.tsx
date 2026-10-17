@@ -48,7 +48,7 @@ function Access() {
         )}
       </div>
       <div className="grid grid-cols-2 gap-3 self-start">
-        {data.photos.map((u) => <img key={u} src={u} alt="" className="aspect-square w-full rounded-lg object-cover" />)}
+        {data.photos.map((u) => <img data-zoom data-zoom-group="private" key={u} src={u} alt="" className="cursor-zoom-in aspect-square w-full rounded-lg object-cover" />)}
       </div>
     </div>
   );
