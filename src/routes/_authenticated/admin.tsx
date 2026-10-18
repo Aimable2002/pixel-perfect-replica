@@ -56,14 +56,14 @@ function Admin() {
                   <td className={td}><Badge>{m.status}</Badge> <Badge variant="secondary">{m.is_published ? "published" : "hidden"}</Badge></td>
                   <td className={td}>{formatRWF(m.base_price)} / {formatRWF(m.platform_fee)} / <b>{formatRWF(m.total)}</b></td>
                   <td className={`${td} space-x-1 whitespace-nowrap`}>
-                    {m.status !== "approved" && <Button size="sm" onClick={() => act(setStatus({ data: { id: m.id, status: "approved", is_published: true } }))}
-              {d.masseurs.length === 0 && <tr><td colSpan=4 className="p-6 text-center text-muted-foreground">No listings yet.</td></tr>}>Approve & publish</Button>}
+                    {m.status !== "approved" && <Button size="sm" onClick={() => act(setStatus({ data: { id: m.id, status: "approved", is_published: true } }))}>Approve & publish</Button>}
                     {m.status === "pending" && <Button size="sm" variant="outline" onClick={() => act(setStatus({ data: { id: m.id, status: "rejected" } }))}>Reject</Button>}
                     {m.status === "approved" && <Button size="sm" variant="outline" onClick={() => act(setStatus({ data: { id: m.id, is_published: !m.is_published } }))}>{m.is_published ? "Unpublish" : "Publish"}</Button>}
                     {m.status === "approved" && <Button size="sm" variant="destructive" onClick={() => act(setStatus({ data: { id: m.id, status: "suspended" } }))}>Suspend</Button>}
                   </td>
                 </tr>
               ))}
+              {d.masseurs.length === 0 && <tr><td colSpan={4} className="p-6 text-center text-muted-foreground">No listings yet.</td></tr>}
             </tbody>
           </table>
         </TabsContent>
@@ -77,10 +77,10 @@ function Admin() {
                   <td className={td}>{u.display_name}<div className="text-xs text-muted-foreground">{u.email}</div></td>
                   <td className={td}>{u.roles.join(", ")}</td>
                   <td className={td}>{u.is_suspended ? <Badge variant="destructive">suspended</Badge> : <Badge variant="secondary">active</Badge>}</td>
-                  <td className={td}><Button size="sm" variant="outline" onClick={() => act(suspend({ data: { id: u.id, suspended: !u.is_suspended } }))}
-              {d.users.length === 0 && <tr><td colSpan=4 className="p-6 text-center text-muted-foreground">No users yet.</td></tr>}>{u.is_suspended ? "Reactivate" : "Suspend"}</Button></td>
+                  <td className={td}><Button size="sm" variant="outline" onClick={() => act(suspend({ data: { id: u.id, suspended: !u.is_suspended } }))}>{u.is_suspended ? "Reactivate" : "Suspend"}</Button></td>
                 </tr>
               ))}
+              {d.users.length === 0 && <tr><td colSpan={4} className="p-6 text-center text-muted-foreground">No users yet.</td></tr>}
             </tbody>
           </table>
         </TabsContent>
@@ -103,7 +103,7 @@ function Admin() {
                     <td className={td}><Badge variant={p.status === "success" ? "default" : "secondary"}>{p.status}</Badge></td><td className={`${td} text-xs`}>{p.backend_reference}</td>
                   </tr>
                 ))}
-              {d.payments.length === 0 && <tr><td colSpan=8 className="p-6 text-center text-muted-foreground">No payments yet.</td></tr>}
+              {d.payments.length === 0 && <tr><td colSpan={8} className="p-6 text-center text-muted-foreground">No payments yet.</td></tr>}
               </tbody>
             </table>
           </div>
@@ -120,7 +120,7 @@ function Admin() {
                   <td className={td}>{new Date(g.expires_at) > new Date() ? <Badge>active</Badge> : <Badge variant="secondary">expired</Badge>}</td>
                 </tr>
               ))}
-              {d.grants.length === 0 && <tr><td colSpan=5 className="p-6 text-center text-muted-foreground">No access grants yet.</td></tr>}
+              {d.grants.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-muted-foreground">No access grants yet.</td></tr>}
             </tbody>
           </table>
         </TabsContent>
