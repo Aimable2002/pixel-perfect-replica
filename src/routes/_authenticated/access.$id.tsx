@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Phone, MessageCircle, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/access/$id")({
-  head: () => ({ meta: [{ title: "Contact details — Umubiri" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Contact details — Umubiri" }, { name: "description", content: "View masseur contact details with active Umubiri access." }, { property: "og:title", content: "Contact details — Umubiri" }, { property: "og:description", content: "View masseur contact details with active Umubiri access." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Access,
 });
 
@@ -43,11 +43,13 @@ function Access() {
         <p className="mt-4 text-sm text-muted-foreground">Contact {p.display_name} directly to arrange your appointment and pay for the session.</p>
         <p className="mt-2 text-xs text-muted-foreground">Access from {new Date(grant.starts_at).toLocaleString()} until {new Date(grant.expires_at).toLocaleString()}</p>
         <p className="mt-6 whitespace-pre-line">{p.bio}</p>
+        {data.services.length === 0 && <p className="mt-6 text-muted-foreground">No services listed.</p>}
         {data.services.length > 0 && (
           <ul className="mt-6 space-y-2">{data.services.map((s) => <li key={s.id}><b>{s.name}</b> — <span className="text-muted-foreground">{s.description}</span></li>)}</ul>
         )}
       </div>
       <div className="grid grid-cols-2 gap-3 self-start">
+        {data.photos.length === 0 && <p className="col-span-2 text-muted-foreground">No photos available.</p>}
         {data.photos.map((u) => <img data-zoom data-zoom-group="private" key={u} src={u} alt="" className="cursor-zoom-in aspect-square w-full rounded-lg object-cover" />)}
       </div>
     </div>

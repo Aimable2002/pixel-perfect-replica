@@ -15,7 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Trash2, Star } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "My listing — Umubiri" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "My listing — Umubiri" }, { name: "description", content: "Manage your Umubiri masseur profile, contact details, services and photos." }, { property: "og:title", content: "My listing — Umubiri" }, { property: "og:description", content: "Manage your Umubiri masseur profile, contact details, services and photos." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Dashboard,
 });
 
@@ -24,9 +24,10 @@ const card = "rounded-xl border bg-card p-6";
 function Dashboard() {
   const fn = useServerFn(getMyListing);
   const qc = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ["my-listing"], queryFn: () => fn() });
+  const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["my-listing"], queryFn: () => fn() });
   const refresh = () => qc.invalidateQueries({ queryKey: ["my-listing"] });
   if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin" />;
+  if (isError) return <div className="py-10 text-center"><p className="text-destructive">Could not load your listing.</p><Button variant="outline" className="mt-4" onClick={() => refetch()}>Retry</Button></div>;
   if (!data) return <p className="text-center text-muted-foreground">This area is for masseur accounts.</p>;
   const { listing, pricing, stats } = data;
   return (
@@ -129,6 +130,7 @@ function Services({ services, onSaved }: any) {
     <section className={card}>
       <h2 className="text-xl font-semibold">Services</h2>
       <ul className="mt-4 space-y-2">
+        {services.length === 0 && <li className="text-sm text-muted-foreground">No services added yet.</li>}
         {services.map((s: any) => (
           <li key={s.id} className="flex items-center justify-between rounded-lg border p-3">
             <div><p className="font-medium">{s.name}</p><p className="text-sm text-muted-foreground">{s.description}</p></div>
@@ -159,7 +161,8 @@ function Photos({ photos, onSaved }: any) {
     setBusy(true);
     try {
       const { data: u } = await supabase.auth.getUser();
-      const path = `${u.user!.id}/${crypto.randomUUID()}.${file.name.split(".").pop()}`;
+      if (!u.user) throw new Error("Please sign in before uploading a photo.");
+      const path = `${u.user.id}/${crypto.randomUUID()}.${file.name.split(".").pop()}`;
       const { error } = await supabase.storage.from("masseur-photos").upload(path, file, { contentType: file.type });
       if (error) throw error;
       await reg({ data: { path, is_public: isPublic } });
@@ -174,6 +177,7 @@ function Photos({ photos, onSaved }: any) {
         <label className="flex items-center gap-2 text-sm"><Switch checked={isPublic} onCheckedChange={setIsPublic} />Upload as public</label>
         <Input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} className="max-w-xs" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
       </div>
+      {photos.length === 0 && <p className="mt-4 text-sm text-muted-foreground">No photos uploaded yet.</p>}
       <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
         {photos.map((p: any) => (
           <div key={p.id} className="overflow-hidden rounded-lg border">
