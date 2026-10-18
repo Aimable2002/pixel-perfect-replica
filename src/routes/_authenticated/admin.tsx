@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Admin — Umubiri" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — Umubiri" }, { name: "description", content: "Manage Umubiri listings, users, payments and platform settings." }, { property: "og:title", content: "Admin — Umubiri" }, { property: "og:description", content: "Manage Umubiri listings, users, payments and platform settings." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Admin,
 });
 
@@ -31,7 +31,8 @@ function Admin() {
 
   if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin" />;
   if (isError) return <p className="text-center text-destructive">{(error as Error).message === "Forbidden" ? "Admins only." : "Failed to load."}</p>;
-  const d = data!;
+  if (!data) return <p className="py-10 text-center text-muted-foreground">No admin information available.</p>;
+  const d = data;
   return (
     <div>
       <h1 className="text-3xl font-semibold">Admin</h1>
@@ -62,6 +63,7 @@ function Admin() {
                   </td>
                 </tr>
               ))}
+              {d.masseurs.length === 0 && <tr><td colSpan={4} className="p-6 text-center text-muted-foreground">No listings yet.</td></tr>}
             </tbody>
           </table>
         </TabsContent>
@@ -78,6 +80,7 @@ function Admin() {
                   <td className={td}><Button size="sm" variant="outline" onClick={() => act(suspend({ data: { id: u.id, suspended: !u.is_suspended } }))}>{u.is_suspended ? "Reactivate" : "Suspend"}</Button></td>
                 </tr>
               ))}
+              {d.users.length === 0 && <tr><td colSpan={4} className="p-6 text-center text-muted-foreground">No users yet.</td></tr>}
             </tbody>
           </table>
         </TabsContent>
@@ -100,6 +103,7 @@ function Admin() {
                     <td className={td}><Badge variant={p.status === "success" ? "default" : "secondary"}>{p.status}</Badge></td><td className={`${td} text-xs`}>{p.backend_reference}</td>
                   </tr>
                 ))}
+              {d.payments.length === 0 && <tr><td colSpan={8} className="p-6 text-center text-muted-foreground">No payments yet.</td></tr>}
               </tbody>
             </table>
           </div>
@@ -116,11 +120,12 @@ function Admin() {
                   <td className={td}>{new Date(g.expires_at) > new Date() ? <Badge>active</Badge> : <Badge variant="secondary">expired</Badge>}</td>
                 </tr>
               ))}
+              {d.grants.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-muted-foreground">No access grants yet.</td></tr>}
             </tbody>
           </table>
         </TabsContent>
 
-        <TabsContent value="settings"><SettingsForm settings={d.settings} onSaved={refresh} /></TabsContent>
+        <TabsContent value="settings">{d.settings ? <SettingsForm settings={d.settings} onSaved={refresh} /> : <p className="py-6 text-muted-foreground">Platform settings are not configured.</p>}</TabsContent>
 
         <TabsContent value="audit" className="overflow-x-auto rounded-xl border bg-card">
           <table className="w-full text-sm">

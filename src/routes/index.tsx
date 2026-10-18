@@ -25,6 +25,8 @@ export const Route = createFileRoute("/")({
   validateSearch: search,
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { title: "Find a masseur in Rwanda — Umubiri" },
       { name: "description", content: "Browse approved masseurs in Kigali, Musanze, Rubavu and beyond. Unlock contact details for 24 hours." },
       { property: "og:title", content: "Find a masseur in Rwanda — Umubiri" },
@@ -83,7 +85,7 @@ function Index() {
           {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-96 rounded-xl" />)}
         </div>
       ) : data.items.length === 0 ? (
-        <div className="rounded-xl border bg-card p-10 text-center text-muted-foreground">No masseurs match your filters.</div>
+        <div className="py-10 text-center text-muted-foreground">{s.q || s.location || s.type ? "No masseurs match your filters." : "No masseurs are available yet."}</div>
       ) : (
         <>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

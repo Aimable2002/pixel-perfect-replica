@@ -1,0 +1,4 @@
+# Tasks
+- [ ] Switch database connection — blocked: Lovable Cloud connection and .env are integration-managed; external anon key alone cannot replace privileged server credentials.
+- [x] Check external database public endpoints: auth settings reachable; anonymous settings/listing reads return []; public_masseurs RPC absent. Private schema, storage policies and account flows remain unverified without external authorized access.
+- [x] Add explicit empty and failure messages across content pages. Existing tests pass; real search empty state verified in browser. External authenticated end-to-end flow remains blocked by connection/access limitations.

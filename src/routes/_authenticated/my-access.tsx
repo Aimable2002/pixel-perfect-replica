@@ -3,18 +3,21 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { myAccess } from "@/lib/customer.functions";
 import { formatRWF } from "@/lib/pricing";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/my-access")({
-  head: () => ({ meta: [{ title: "My access — Umubiri" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "My access — Umubiri" }, { name: "description", content: "View your Umubiri contact unlocks and payment history." }, { property: "og:title", content: "My access — Umubiri" }, { property: "og:description", content: "View your Umubiri contact unlocks and payment history." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: MyAccess,
 });
 
 function MyAccess() {
   const fn = useServerFn(myAccess);
-  const { data, isLoading } = useQuery({ queryKey: ["my-access"], queryFn: () => fn() });
-  if (isLoading || !data) return <Loader2 className="mx-auto h-6 w-6 animate-spin" />;
+  const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["my-access"], queryFn: () => fn() });
+  if (isError) return <div className="py-10 text-center"><p className="text-destructive">Could not load your access or payments.</p><Button variant="outline" className="mt-4" onClick={() => refetch()}>Retry</Button></div>;
+  if (isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin" />;
+  if (!data) return <p className="py-10 text-center text-muted-foreground">No access or payments available.</p>;
   const now = Date.now();
   return (
     <div className="space-y-10">

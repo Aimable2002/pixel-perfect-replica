@@ -13,7 +13,7 @@ import { Loader2, CheckCircle2, XCircle } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/pay/$id")({
   validateSearch: z.object({ payment: z.string().uuid().optional() }),
-  head: () => ({ meta: [{ title: "Unlock contact — Umubiri" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Unlock contact — Umubiri" }, { name: "description", content: "Purchase time-limited access to masseur contact details on Umubiri." }, { property: "og:title", content: "Unlock contact — Umubiri" }, { property: "og:description", content: "Purchase time-limited access to masseur contact details on Umubiri." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Pay,
 });
 
@@ -31,7 +31,10 @@ function Pay() {
   const quote = useQuery({ queryKey: ["quote", id], queryFn: () => quoteFn({ data: { masseurId: id } }) });
   const status = useQuery({
     queryKey: ["payment", payment],
-    queryFn: () => checkFn({ data: { paymentId: payment! } }),
+    queryFn: () => {
+      if (!payment) throw new Error("No payment selected.");
+      return checkFn({ data: { paymentId: payment } });
+    },
     enabled: !!payment,
     refetchInterval: (q) => (q.state.data?.status === "pending" ? 3000 : false),
   });
@@ -54,7 +57,8 @@ function Pay() {
 
   if (quote.isLoading) return <Loader2 className="mx-auto h-6 w-6 animate-spin" />;
   if (quote.isError) return <p className="text-center text-destructive">{(quote.error as Error).message}</p>;
-  const q = quote.data!;
+  if (!quote.data) return <p className="py-10 text-center text-muted-foreground">This listing is unavailable.</p>;
+  const q = quote.data;
 
   return (
     <div className="mx-auto max-w-lg rounded-2xl border bg-card p-8 shadow-sm">
@@ -72,8 +76,12 @@ function Pay() {
             {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Pay {formatRWF(q.total)}
           </Button>
         </div>
-      ) : status.isLoading || !status.data ? (
+      ) : status.isError ? (
+        <div className="mt-6 text-center"><p className="text-destructive">Could not check your payment. Its confirmation has not been verified.</p><Button variant="outline" className="mt-4" onClick={() => status.refetch()}>Retry</Button></div>
+      ) : status.isLoading ? (
         <Loader2 className="mx-auto mt-6 h-6 w-6 animate-spin" />
+      ) : !status.data ? (
+        <p className="mt-6 text-muted-foreground">No payment information available.</p>
       ) : status.data.status === "pending" ? (
         <div className="mt-6 space-y-4">
           <div className="flex items-center gap-2 font-medium"><Loader2 className="h-4 w-4 animate-spin" />Waiting for confirmation…</div>
